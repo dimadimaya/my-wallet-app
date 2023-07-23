@@ -1,0 +1,47 @@
+.form_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 150px);
+}
+
+.form {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-width: 300px;
+  max-width: 360px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  border: 2px solid #b7b7b7;
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.send {
+  width: 100%;
+  background-color: #44d12d;
+  transition: background-color 0.25s;
+  outline: none;
+  border: none;
+}
+
+.send:hover {
+  background-color: #66ff01;
+}
+
+.send:disabled {
+  /* Стили для кнопки в отключенном состоянии */
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #e63334;
+  font-size: 14px;
+  position: absolute;
+  top: 68px;
+  left: 24px;
+}

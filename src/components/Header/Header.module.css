@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  height: 90px;
+}
+
+.logo {
+  font-size: 24px;
+  color: #b7b7b7;
+}
+
+.wallet__info {
+  display: flex;
+  gap: 20px;
+  font-size: 24px;
+  color: #b7b7b7;
+}
+
+.connect {
+  background-color: #44d12d;
+  transition: background-color 0.25s;
+}
+
+.connect:hover {
+  background-color: #66ff01;
+}
