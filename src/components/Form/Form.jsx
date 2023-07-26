@@ -1,10 +1,15 @@
 import { useState } from "react";
 import Web3 from "web3";
-import { isValidEthereumAddress } from "../../utils/utils";
+import {
+  isValidAmountMultipleOfTen,
+  isValidAmountRange,
+  isValidEthereumAddress,
+} from "../../utils/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./Form.module.css";
 import PropTypes from "prop-types";
+import { SpinnerCircular } from "spinners-react";
 
 export const Form = ({ userAcc }) => {
   const [recipientAddress, setRecipientAddress] = useState("");
@@ -16,21 +21,42 @@ export const Form = ({ userAcc }) => {
     try {
       const web3 = new Web3(window.ethereum);
       setIsLoading(true);
+
       const isValid = isValidEthereumAddress(recipientAddress);
       if (!isValid) {
         setIsValidAddress(false);
         return;
       }
+
+      if (!isValidAmountRange(amount)) {
+        toast.error(
+          "The number of tokens must be in the range from 0.000001 to 100000"
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      if (!isValidAmountMultipleOfTen(amount)) {
+        toast.error("The number of tokens must be a multiple of 10");
+        setIsLoading(false);
+        return;
+      }
+
+      const weiAmount = web3.utils.toWei(amount.toString(), "ether");
+
       await window.ethereum.request({
         method: "eth_sendTransaction",
         params: [
           {
             from: userAcc,
             to: recipientAddress,
-            value: web3.utils.toWei(amount.toString(), "ether"),
+            value: weiAmount,
           },
         ],
       });
+      toast.success("Transaction success");
+      setRecipientAddress("");
+      setAmount("");
     } catch (error) {
       console.error(error);
       toast.error("Transaction failed");
@@ -78,7 +104,17 @@ export const Form = ({ userAcc }) => {
           disabled={!isValidAddress}
           className={styles.send}
         >
-          {isLoading ? "Sending..." : "Send"}
+          {isLoading ? (
+            <SpinnerCircular
+              size={20}
+              thickness={100}
+              speed={100}
+              color="#FFFFFF"
+              secondaryColor="#3E85F3"
+            />
+          ) : (
+            "Send"
+          )}
         </button>
       </form>
     </div>

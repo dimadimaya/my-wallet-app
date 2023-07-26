@@ -19,13 +19,13 @@ function App() {
         });
         setUserAcc(window.ethereum.selectedAddress);
         await getBalance(window.ethereum.selectedAddress);
+        toast.success("Connected success");
       } else {
         toast.error("Install Metamask");
       }
     } catch (error) {
       console.log(error);
     }
-    toast.success("Connected success");
   };
 
   const getBalance = async (account) => {
